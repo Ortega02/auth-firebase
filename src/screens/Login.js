@@ -27,9 +27,9 @@ function Login() {
 
   return (
     <div className="login-container">
+      <form onSubmit={submitHandler} className="login-form">
       <div className="login-title">¡Bienvenido!</div>
       <div className="login-subtitle">Inicia Sesión para continuar</div>
-      <form onSubmit={submitHandler} className="login-form">
         <div className="input-container">
           <label htmlFor="correo">
             <FontAwesomeIcon icon={faEnvelope} />
