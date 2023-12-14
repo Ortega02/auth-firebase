@@ -1,0 +1,73 @@
+/* Estilos generales */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Estilos del NavBar */
+.navbar {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px;
+  text-align: left;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between; /* Alinea los elementos al inicio y al final */
+  align-items: center; /* Centra verticalmente los elementos */
+}
+
+
+.navbar-left {
+  font-size: 1.5em;
+}
+
+/* Estilos del contenido */
+.content-container {
+  padding: 20px;
+  flex: 1;
+}
+
+/* Estilos del Footer */
+.footer {
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+
+.footer-text {
+  font-size: 1.2em;
+}
+
+/* Estilos del Sidebar */
+.react-sidebar {
+  z-index: 1;
+}
+
+.sidebar {
+  background: white;
+  width: 250px;
+  height: 100vh; /* Establece la altura al 100% del viewport */
+  transition: left 0.3s ease; /* Agrega una transición para suavizar la animación */
+  z-index: 1;
+}
+
+/* Estilos del botón de activación del Sidebar */
+.sidebar-button {
+  background-color: yellow;
+  color: #3498db;
+  border: none;
+  cursor: pointer;
+  margin-top: 5px;
+  margin-right: 35px;
+}

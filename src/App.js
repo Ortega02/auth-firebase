@@ -3,6 +3,8 @@ import {getAuth, onAuthStateChanged} from 'firebase/auth';
 
 import Home from './screens/Home';
 import Login from './screens/Login';
+
+
 //importando credenciales de firebase
 import firebaseApp from './firebase/credenciales';
 
