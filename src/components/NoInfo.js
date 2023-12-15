@@ -2,7 +2,7 @@ import React from "react";
 import NavBar from '../components/Navbar.js';
 import Footer from '../components/Footer.js';
 import Lottie from "lottie-react";
-import animationData from '../components/animations/fishing2.json'; // Reemplaza con la ruta correcta de tu animación
+import animationData from '../components/animations/fishing.json'; // Reemplaza con la ruta correcta de tu animación
 
 function NoInfo() {
 

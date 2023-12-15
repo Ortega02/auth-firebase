@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import firebaseApp from '../firebase/credenciales';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faKey } from '@fortawesome/free-solid-svg-icons';
 import '../styles/Login.css';
@@ -10,6 +11,7 @@ const auth = getAuth(firebaseApp);
 function Login() {
   const [isLogin, setIsLogin] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -20,6 +22,8 @@ function Login() {
 
     try {
       await signInWithEmailAndPassword(auth, correo, contra);
+      // Si el inicio de sesión es exitoso, redirige al componente Home
+      navigate('/');
     } catch (error) {
       setError('Correo o contraseña incorrectos. Por favor, inténtalo de nuevo.');
     }
@@ -28,8 +32,8 @@ function Login() {
   return (
     <div className="login-container">
       <form onSubmit={submitHandler} className="login-form">
-      <div className="login-title">¡Bienvenido!</div>
-      <div className="login-subtitle">Inicia Sesión para continuar</div>
+        <div className="login-title">¡Bienvenido!</div>
+        <div className="login-subtitle">Inicia Sesión para continuar</div>
         <div className="input-container">
           <label htmlFor="correo">
             <FontAwesomeIcon icon={faEnvelope} />
@@ -52,10 +56,8 @@ function Login() {
         <div className="wave" id='wave2'></div>
         <div className="wave" id='wave3'></div>
         <div className="wave" id='wave4'></div>
-        </div>
-        
+      </div>
     </div>
-
   );
 }
 
