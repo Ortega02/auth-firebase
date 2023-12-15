@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavBar from '../components/Navbar.js';
 import Footer from '../components/Footer.js';
 import Lottie from "lottie-react";
-import animationData from '../components/animations/fish.json'; // Reemplaza con la ruta correcta de tu animación
+import animationData from '../components/animations/fish2.json'; // Reemplaza con la ruta correcta de tu animación
 
 function Splash() {
   const [isAnimationVisible, setIsAnimationVisible] = useState(true);

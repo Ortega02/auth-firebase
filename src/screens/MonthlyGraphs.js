@@ -1,10 +1,10 @@
 import React from 'react'
 import NoInfo from '../components/NoInfo';
 
-function NewUser() {
+function MonthlyGraphs() {
   return (
     <NoInfo />
   )
 }
 
-export default NewUser
+export default MonthlyGraphs

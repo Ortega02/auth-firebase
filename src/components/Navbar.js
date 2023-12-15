@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import firebaseApp from "../firebase/credenciales";
 import Sidebar from "react-sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import '../styles/Layouts.css';
+import { faBars, faChartLine, faFile, faUser, faArrowRightFromBracket} from "@fortawesome/free-solid-svg-icons";
+import "../styles/Layouts.css";
 
 const auth = getAuth(firebaseApp);
 
@@ -19,7 +20,10 @@ const NavBar = () => {
     <div>
       <nav className="navbar">
         <div className="navbar-left">SISTEMA DE MONITOREO</div>
-        <button className="sidebar-button" onClick={() => onSetSidebarOpen(true)}>
+        <button
+          className="sidebar-button"
+          onClick={() => onSetSidebarOpen(true)}
+        >
           <FontAwesomeIcon icon={faBars} />
         </button>
       </nav>
@@ -28,12 +32,28 @@ const NavBar = () => {
           <div className="sidebar">
             <h2>Menú</h2>
             <ul>
-              <li>Gráficas diarias</li>
-              <li>Gráficas mensuales</li>
-              <li>Reportes diarios</li>
-              <li>Reportes mensuales</li>
-              <li>Agregar usuario</li>
               <li>
+                <FontAwesomeIcon icon={faChartLine} className="icons" />
+                <Link to="/graficas-diarias">Gráficas diarias</Link>
+              </li>
+              <li>
+              <FontAwesomeIcon icon={faChartLine} className="icons" />
+                <Link to="/graficas-mensuales">Gráficas mensuales</Link>
+              </li>
+              <li>
+              <FontAwesomeIcon icon={faFile} className="icons" />
+                <Link to="/reportes-diarios">Reportes diarios</Link>
+              </li>
+              <li>
+              <FontAwesomeIcon icon={faFile} className="icons" />
+                <Link to="/reportes-mensuales">Reportes mensuales</Link>
+              </li>
+              <li>
+              <FontAwesomeIcon icon={faUser} className="icons"/>
+                <Link to="/agregar-usuario">Agregar usuario</Link>
+              </li>
+              <li>
+                <FontAwesomeIcon icon={faArrowRightFromBracket} className="icons" />
                 <button onClick={() => signOut(auth)}>Cerrar sesión</button>
               </li>
             </ul>
@@ -45,7 +65,13 @@ const NavBar = () => {
         styles={{ sidebar: { background: "white", width: "250px" } }}
       >
         {/* Botón de cierre del Sidebar */}
-        <div style={{ display: "flex", justifyContent: "flex-end", padding: "10px"}}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            padding: "10px",
+          }}
+        >
           <button onClick={() => onSetSidebarOpen(false)}>
             <FontAwesomeIcon icon={faBars} />
           </button>
