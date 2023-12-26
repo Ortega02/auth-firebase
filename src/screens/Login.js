@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import firebaseApp from '../firebase/credenciales';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faKey } from '@fortawesome/free-solid-svg-icons';
+import { testConnection } from '../firebase/credenciales';
 import '../styles/Login.css';
 
 const auth = getAuth(firebaseApp);
@@ -28,6 +29,9 @@ function Login() {
       setError('Correo o contraseña incorrectos. Por favor, inténtalo de nuevo.');
     }
   };
+  useEffect(() => {
+    testConnection();
+  }, []);
 
   return (
     <div className="login-container">

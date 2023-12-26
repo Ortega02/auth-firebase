@@ -1,5 +1,8 @@
 // Importamos la función para inicializar la aplicación de Firebase
 import { initializeApp } from "firebase/app";
+import { getAnalytics } from 'firebase/analytics';
+import { getDatabase, ref, get } from 'firebase/database';
+import { getAuth } from "firebase/auth";
 
 // Añade aquí tus credenciales
 const firebaseConfig = {
@@ -14,5 +17,26 @@ const firebaseConfig = {
 
 // Inicializamos la aplicación y la guardamos en firebaseApp
 const firebaseApp = initializeApp(firebaseConfig);
+
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getDatabase(app);
+const auth = getAuth(app);
+
+const testConnection = async () => {
+  try {
+    const databaseRef = ref(db);
+    const snapshot = await get(databaseRef);
+    if (snapshot.exists()) {
+      console.log('¡Conexión exitosa!');
+    } else {
+      throw new Error('No se pudo conectar con la base de datos');
+    }
+  } catch (error) {
+    console.error('Error al conectar con la base de datos:', error);
+  }
+};
+
+export { db, analytics, testConnection, auth  };
 // Exportamos firebaseApp para poder utilizarla en cualquier lugar de la aplicación
 export default firebaseApp;

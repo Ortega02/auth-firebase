@@ -1,0 +1,25 @@
+.input-with-icon-container {
+    display: flex;
+    align-items: center;
+    margin: auto;
+    margin-bottom: 10px;
+  }
+  
+  .input-with-icon-container input {
+    padding-left: 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex: 1;
+    height: 40px;
+  }
+  
+  .input-with-icon-container span {
+    position: absolute;
+    margin-left: 5px; 
+  }
+  
+  .input-with-icon-container svg {
+    position: relative;
+    z-index: 1;
+  }
+  

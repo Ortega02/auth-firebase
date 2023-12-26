@@ -1,0 +1,101 @@
+.estanque-card {
+    position: relative;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 40px;
+    width: 100%; 
+    max-width: 310px; 
+    margin: 10px auto; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex: 0 1 calc(33% - 20px); 
+    margin-bottom: 70px;
+  
+  }
+  
+  .estanque-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .estanque-card img {
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+    height: 200px;
+    margin-top: 10px;
+   
+  }
+  
+  .delete-button {
+    margin-top: -10px;
+    margin-right: -10px; 
+    align-self: flex-end; 
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: red;
+  }
+  
+  .delete-button:hover {
+    transform: translateY(-5px);
+  }
+  
+  .estanque-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .nombre-section,
+  .ubicacion-section {
+    display: flex;
+    align-items: center;
+   
+  }
+  
+  .nombre-section h2,
+  .ubicacion-section p {
+    margin-left: 10px;
+  }
+  .edit-button{
+    color: black;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  /* modalStyles.css */
+  .custom-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 400px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   
+   
+  }
+  .estanque-card.modal-open {
+    opacity: 0.5; 
+    pointer-events: none; 
+  }
+  
+  @media screen and (max-width: 768px) {
+    .estanque-card {
+      flex: 0 1 calc(50% - 20px); /* Dos tarjetas por fila en pantallas más pequeñas */
+    }
+    .estanque-card img {
+      height: 150px; /* Ajustar tamaño de la imagen */
+    }
+    .delete-button {
+      margin-top: -5px; /* Ajustar posición del botón de eliminar */
+      margin-right: -5px; 
+    }
+  }
