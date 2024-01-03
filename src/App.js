@@ -22,6 +22,7 @@ function App() {
         <Route path="/reportes-mensuales" element={<MonthlyReports />} />
         <Route path="/agregar-usuario" element={<NewUser />} />
         <Route path="/cambiar-contrasena" element={<ChangePass />} />
+        <Route path="/agregar-usuario" element={<NewUser />} />
       </Routes>
     </Router>
   );

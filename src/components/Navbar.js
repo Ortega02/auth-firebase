@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { getAuth, signOut } from "firebase/auth";
 import firebaseApp from "../firebase/credenciales";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { getDatabase, ref, get } from "firebase/database";
 import Sidebar from "react-sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,7 +11,7 @@ import {
   faFile,
   faUser,
   faArrowRightFromBracket,
-  faHome
+  faHome,
 } from "@fortawesome/free-solid-svg-icons";
 import "../styles/Layouts.css";
 
@@ -21,6 +22,8 @@ const NavBar = () => {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("");
+  const [userInSession, setUserInSession] = useState(null);
+  const [showAddUserOption, setShowAddUserOption] = useState(false);
 
   const onSetSidebarOpen = (open) => {
     setSidebarOpen(open);
@@ -28,14 +31,48 @@ const NavBar = () => {
 
   const handleSignOut = () => {
     signOut(auth).then(() => {
-      // Después de cerrar sesión, redirige al usuario a la pantalla de inicio de sesión
       navigate("/login");
     });
   };
 
   useEffect(() => {
+    // Obtener información del usuario en sesión
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUserInSession(user);
+    });
+
+    // Limpiar suscripciones al desmontar el componente
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
     setActiveLink(location.pathname);
   }, [location.pathname]);
+
+  useEffect(() => {
+    renderAddUserOption();
+  }, [userInSession]);
+
+  const renderAddUserOption = async () => {
+    if (userInSession) {
+      const database = getDatabase(firebaseApp);
+      const userRef = ref(database, `usuarios/${userInSession.uid}`);
+
+      try {
+        const snapshot = await get(userRef);
+        const userExists = snapshot.exists();
+
+        // Actualizar el estado en lugar de retornar directamente
+        setShowAddUserOption(!userExists);
+      } catch (error) {
+        console.error(
+          "Error al verificar usuario en la base de datos:",
+          error.message
+        );
+        // En caso de error, podrías manejarlo aquí
+      }
+    }
+  };
 
   return (
     <div>
@@ -57,26 +94,36 @@ const NavBar = () => {
                 <FontAwesomeIcon icon={faHome} className="icons" />
                 <Link to="/">Home</Link>
               </li>
-              <li className={activeLink === "/graficas-diarias" ? "active" : ""}>
+              <li
+                className={activeLink === "/graficas-diarias" ? "active" : ""}
+              >
                 <FontAwesomeIcon icon={faChartLine} className="icons" />
                 <Link to="/graficas-diarias">Gráficas diarias</Link>
               </li>
-              <li className={activeLink === "/graficas-mensuales" ? "active" : ""}>
+              <li
+                className={activeLink === "/graficas-mensuales" ? "active" : ""}
+              >
                 <FontAwesomeIcon icon={faChartLine} className="icons" />
                 <Link to="/graficas-mensuales">Gráficas mensuales</Link>
               </li>
-              <li className={activeLink === "/reportes-diarios" ? "active" : ""}>
+              <li
+                className={activeLink === "/reportes-diarios" ? "active" : ""}
+              >
                 <FontAwesomeIcon icon={faFile} className="icons" />
                 <Link to="/reportes-diarios">Reportes diarios</Link>
               </li>
-              <li className={activeLink === "/reportes-mensuales" ? "active" : ""}>
+              <li
+                className={activeLink === "/reportes-mensuales" ? "active" : ""}
+              >
                 <FontAwesomeIcon icon={faFile} className="icons" />
                 <Link to="/reportes-mensuales">Reportes mensuales</Link>
               </li>
-              <li className={activeLink === "/agregar-usuario" ? "active" : ""}>
-                <FontAwesomeIcon icon={faUser} className="icons" />
-                <Link to="/agregar-usuario">Agregar usuario</Link>
-              </li>
+              {showAddUserOption && (
+                <li className={activeLink === "/agregar-usuario" ? "active" : ""}>
+                  <FontAwesomeIcon icon={faUser} className="icons" />
+                  <Link to="/agregar-usuario">Agregar usuario</Link>
+                </li>
+              )}
               <li>
                 <FontAwesomeIcon
                   icon={faArrowRightFromBracket}
@@ -94,7 +141,6 @@ const NavBar = () => {
         pullRight={true}
         styles={{ sidebar: { background: "white", width: "250px" } }}
       >
-        {/* Botón de cierre del Sidebar */}
         <div
           style={{
             display: "flex",
@@ -113,7 +159,6 @@ const NavBar = () => {
       <br></br>
       <br></br>
     </div>
-    
   );
 };
 
