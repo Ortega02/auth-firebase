@@ -7,7 +7,7 @@ import MonthlyGraphs from './screens/MonthlyGraphs';
 import DailyReports from './screens/DailyReports';
 import MonthlyReports from './screens/MonthlyReports';
 import NewUser from './screens/NewUser';
-
+import ChangePass from './screens/ChangePass';
 
 function App() {
 
@@ -21,6 +21,7 @@ function App() {
         <Route path="/reportes-diarios" element={<DailyReports />} />
         <Route path="/reportes-mensuales" element={<MonthlyReports />} />
         <Route path="/agregar-usuario" element={<NewUser />} />
+        <Route path="/cambiar-contrasena" element={<ChangePass />} />
       </Routes>
     </Router>
   );

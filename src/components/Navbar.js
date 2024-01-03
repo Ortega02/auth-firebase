@@ -107,7 +107,13 @@ const NavBar = () => {
           </button>
         </div>
       </Sidebar>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
     </div>
+    
   );
 };
 

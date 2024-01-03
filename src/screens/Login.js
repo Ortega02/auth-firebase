@@ -42,18 +42,19 @@ function Login() {
           <label htmlFor="correo">
             <FontAwesomeIcon icon={faEnvelope} />
           </label>
-          <input type="email" id="correo" placeholder="Correo" />
+          <input type="email" id="correo" name="correo" placeholder="Correo" />
         </div>
         <div className="input-container">
           <label htmlFor="contra">
             <FontAwesomeIcon icon={faKey} />
           </label>
-          <input type="password" id="contra" placeholder="Contraseña" />
+          <input type="password" id="contra" name="contra" placeholder="Contraseña" />
         </div>
         {error && <div className="error-message">{error}</div>}
         <div className="button-container">
           <button type="submit">Iniciar Sesión</button>
         </div>
+        <a href="/cambiar-contrasena">¿Olvidaste tu contraseña?</a>
       </form>
       <div className="waves">
         <div className="wave" id='wave1'></div>

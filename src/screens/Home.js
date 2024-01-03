@@ -106,6 +106,7 @@ function Home() {
         <div>
            
                 <NavBar />
+
                 <div>
 
                     <Modal
