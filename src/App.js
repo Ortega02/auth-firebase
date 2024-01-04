@@ -8,6 +8,8 @@ import DailyReports from './screens/DailyReports';
 import MonthlyReports from './screens/MonthlyReports';
 import NewUser from './screens/NewUser';
 import ChangePass from './screens/ChangePass';
+import UserListScreen from './screens/UserList';
+import EditUser from './screens/EditUser';
 
 function App() {
 
@@ -23,6 +25,8 @@ function App() {
         <Route path="/agregar-usuario" element={<NewUser />} />
         <Route path="/cambiar-contrasena" element={<ChangePass />} />
         <Route path="/agregar-usuario" element={<NewUser />} />
+        <Route path="/lista-usuarios" element={<UserListScreen />} />
+        <Route path="/editar-usuario/:userId" element={<EditUser />} />
       </Routes>
     </Router>
   );

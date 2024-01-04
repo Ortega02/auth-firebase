@@ -1,0 +1,127 @@
+/*input del componente userlist.jsx */
+.user-list {
+    margin-right: 1vw;
+    padding: 3px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 40vw; 
+    max-width: 200px;
+   
+  }
+  /*titulo del componente Lista de usuarios userlist.jsx */
+  h3 {
+    text-align: center;
+    font-size: 1.5em;
+  }
+  /*Boton de editar componente userlist.jsx */
+  .editButton {
+    background-color: #3f51b5; 
+    color: white;
+    max-width: 100px;
+    width: 40vw; 
+    cursor: pointer;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    margin: 5px;
+    flex: 1;
+  }
+  /*Boton de eliminar componente userlist.jsx */
+  .deleteButton {
+    background-color: #f44336; 
+    color: white; 
+    max-width: 100px;
+    width: 40vw;
+    cursor: pointer;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    margin: 5px;
+    flex: 1;
+  }
+  
+  /* div de la screen userlist.jsx */
+  .userContainer {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 4vw;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 50%; 
+    margin: 0 auto;
+    min-height: 200px;
+    max-width: 700px;
+  }
+  
+  /* Estilos del div de la screen edituser.jsx */
+  .formContainer {
+    background-color: white;
+    border-radius: 20px; 
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 80%; 
+    max-width: 200px; 
+    position: absolute;
+    top: 50%;
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Estilos del contenedor de los botones editar y cerrar de la screen edituser.jsx y adduser.jsx */
+  .buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  /* Estilos de los botones editar y cerrar de la screen edituser.jsx y adduser.jsx*/
+  .adduserbotton {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    flex: 1; 
+    margin: 0 5px; 
+  }
+  /* Responsive */
+  @media screen and (max-width: 600px) {
+    .buttonContainer {
+      flex-direction: column;
+    }
+    .adduserbotton {
+      margin: 5px 0;
+      width: 100%;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .userContainer {
+      padding: 6vw;
+    }
+    input {
+      width: 90%; 
+      max-width: none;
+    }
+  
+    h3 {
+      font-size: 1.2em; 
+    }
+  
+    button {
+      padding: 5px 8px;
+      margin-left: 0.5vw; 
+      margin-top: 1vh; 
+    }
+  
+  }
+  
+  

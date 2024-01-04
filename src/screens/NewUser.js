@@ -18,7 +18,7 @@ function Registro() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  async function registrarUsuario(email, password, rol) {
+  async function registrarUsuario(email, password, rol, nombre, apellido) {
     try {
       // Verificar si el correo ya existe
       const signInMethods = await fetchSignInMethodsForEmail(auth, email);
@@ -38,7 +38,7 @@ function Registro() {
 
       // Almacenar información en Realtime Database
       const dbRef = ref(database, `usuarios/${infoUsuario.user.uid}`);
-      await set(dbRef, { correo: email, rol: rol });
+      await set(dbRef, { correo: email, rol: rol, nombre, apellido });
 
       // Mostrar modal de registro exitoso
       setModalIsOpen(true);
@@ -58,12 +58,14 @@ function Registro() {
     const email = e.target.elements.email.value;
     const password = e.target.elements.password.value;
     const rol = "usuario"; // Establece el rol como "usuario" por defecto
+    const nombre = e.target.elements.nombre.value;
+    const apellido = e.target.elements.apellido.value;
 
     // Limpiar mensajes de error anteriores
     setErrorMessage("");
 
     // Registrar usuario y manejar validaciones y modal
-    registrarUsuario(email, password, rol);
+    registrarUsuario(email, password, rol, nombre, apellido);
   }
 
   return (
@@ -71,6 +73,16 @@ function Registro() {
       <h1 style={{ color: "blue" }}>Regístrate</h1>
 
       <form onSubmit={submitHandler}>
+        <label>
+          Nombre:
+          <input type="text" id="nombre" required />
+        </label>
+
+        <label>
+          Apellido:
+          <input type="text" id="apellido" required />
+        </label>
+
         <label>
           Correo electrónico:
           <input type="email" id="email" required />

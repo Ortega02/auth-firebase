@@ -123,6 +123,14 @@ const NavBar = () => {
                   <FontAwesomeIcon icon={faUser} className="icons" />
                   <Link to="/agregar-usuario">Agregar usuario</Link>
                 </li>
+                
+              )}
+               {showAddUserOption && (
+                <li className={activeLink === "/lista-usuarios" ? "active" : ""}>
+                  <FontAwesomeIcon icon={faUser} className="icons" />
+                  <Link to="/lista-usuarios">Ver usuarios</Link>
+                </li>
+                
               )}
               <li>
                 <FontAwesomeIcon
