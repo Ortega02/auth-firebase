@@ -23,6 +23,7 @@ import {
 import CustomInput from "../components/LoginInput.js";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import NoInfo from "../components/NoInfo.js";
 
 const auth = getAuth(firebaseApp);
 
@@ -177,16 +178,20 @@ function Home() {
         </Modal>
 
         <div className="estanques-container">
-          {estanques.map((estanque) => (
-            <EstanquesCard
-              key={estanque.id}
-              id={estanque.id}
-              nombre={estanque.nombre}
-              ubicacion={estanque.ubicacion}
-              imagen={estanque.imagen}
-            />
-          ))}
-        </div>
+      {estanques.length > 0 ? (
+        estanques.map((estanque) => (
+          <EstanquesCard
+            key={estanque.id}
+            id={estanque.id}
+            nombre={estanque.nombre}
+            ubicacion={estanque.ubicacion}
+            imagen={estanque.imagen}
+          />
+        ))
+      ) : (
+        <NoInfo />
+      )}
+    </div>
         {showAddCardOption && (
           <Button
             buttonStyles="add-button"

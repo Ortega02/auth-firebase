@@ -59,7 +59,7 @@ const getUsers = async () => {
 
   const deleteUser = async (userId) => {
     try {
-      await remove(ref(db, `users/${userId}`));
+      await remove(ref(db, `usuarios/${userId}`));
       console.log('Usuario eliminado correctamente');
     } catch (error) {
       console.error('Error al eliminar usuario:', error);
@@ -88,11 +88,11 @@ const getUsers = async () => {
         }
   
         const hashedPassword = SHA256(password).toString();
-        userDataToUpdate.contrasena = hashedPassword;
+        userDataToUpdate.contraseña = hashedPassword;
       }
   
       if (Object.keys(userDataToUpdate).length > 0) {
-        await update(ref(db, `users/${userId}`), userDataToUpdate);
+        await update(ref(db, `usuarios/${userId}`), userDataToUpdate);
         console.log('Usuario actualizado correctamente');
       } else {
         throw new Error('No se proporcionaron datos válidos para actualizar');
@@ -107,14 +107,14 @@ const getUsers = async () => {
   
   const getUserById = async (userId) => {
     try {
-      const userRef = ref(db, `users/${userId}`);
+      const userRef = ref(db, `usuarios/${userId}`);
       const snapshot = await get(userRef);
       
       if (snapshot.exists()) {
         const userData = snapshot.val();
         // Supongamos que tu campo de contraseña se llama 'password' en los datos del usuario
-        if (userData && userData.contrasena) {
-          userData.contrasena = '*'.repeat(userData.contrasena.length); // Enmascarar la contraseña
+        if (userData && userData.contraseña) {
+          userData.contraseña = '*'.repeat(userData.contraseña.length); // Enmascarar la contraseña
         }
         return userData;
       } else {

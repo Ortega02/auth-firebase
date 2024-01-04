@@ -22,24 +22,24 @@ function Registro() {
     try {
       // Verificar si el correo ya existe
       const signInMethods = await fetchSignInMethodsForEmail(auth, email);
-
+  
       if (signInMethods.length > 0) {
         // El correo ya está en uso, mostrar mensaje de error
         setErrorMessage("Ya existe un usuario con ese correo.");
         return;
       }
-
+  
       // Registrar usuario si el correo no está en uso
       const infoUsuario = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-
-      // Almacenar información en Realtime Database
+  
+      // Almacenar información en Realtime Database, incluyendo la contraseña
       const dbRef = ref(database, `usuarios/${infoUsuario.user.uid}`);
-      await set(dbRef, { correo: email, rol: rol, nombre, apellido });
-
+      await set(dbRef, { correo: email, rol: rol, nombre, apellido, contraseña: password });
+  
       // Mostrar modal de registro exitoso
       setModalIsOpen(true);
     } catch (error) {

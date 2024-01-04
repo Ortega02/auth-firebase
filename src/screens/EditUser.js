@@ -59,7 +59,7 @@ const EditUser = () => {
             icon: 'success',
             confirmButtonText: 'Aceptar',
         }).then(() => {
-            navigate('/userlist');
+            navigate('/usuarios');
         });
     };
 
@@ -90,7 +90,7 @@ const EditUser = () => {
     };
 
     const closeadd = () => {
-        navigate('/lista-usuarios');
+        navigate('/usuarios');
     }
 
     const handleNombreChange = (event) => {

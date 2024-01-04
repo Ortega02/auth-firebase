@@ -25,7 +25,7 @@ function App() {
         <Route path="/agregar-usuario" element={<NewUser />} />
         <Route path="/cambiar-contrasena" element={<ChangePass />} />
         <Route path="/agregar-usuario" element={<NewUser />} />
-        <Route path="/lista-usuarios" element={<UserListScreen />} />
+        <Route path="/usuarios" element={<UserListScreen />} />
         <Route path="/editar-usuario/:userId" element={<EditUser />} />
       </Routes>
     </Router>
