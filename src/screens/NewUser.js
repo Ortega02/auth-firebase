@@ -63,13 +63,11 @@ function Registro() {
   async function registrarUsuario(email, password, rol, nombre, apellido) {
     try {
       const signInMethods = await fetchSignInMethodsForEmail(auth, email);
-
+  
       if (signInMethods.length > 0) {
-        setErrorMessages((prevErrors) => ({
-          ...prevErrors,
-          email: "Ya existe un usuario con ese correo.",
-        }));
-        showErrorAlert(errorMessages.email);
+        const errorMessage = "Ya existe un usuario con ese correo.";
+        setErrorMessages((prevErrors) => ({ ...prevErrors, email: errorMessage }));
+        showErrorAlert(errorMessage);
         return;
       }
 
@@ -98,6 +96,70 @@ function Registro() {
         // Redirect to /usuarios
         window.location.href = "/usuarios";
       });
+    }  catch (error) {
+      let errorMessage = "Error al registrar usuario. Inténtalo nuevamente.";
+  
+      if (error.code === "auth/email-already-in-use") {
+        errorMessage = "Ya existe un usuario con ese correo electrónico.";
+      }
+  
+      setErrorMessages((prevErrors) => ({ ...prevErrors, email: errorMessage }));
+      showErrorAlert(errorMessage);
+    }
+  }
+
+  async function submitHandler(e) {
+    e.preventDefault();
+  
+    const email = e.target.elements.email.value;
+    const password = e.target.elements.password.value;
+    const rol = "usuario"; // Establece el rol como "usuario" por defecto
+    const nombre = e.target.elements.nombre.value;
+    const apellido = e.target.elements.apellido.value;
+  
+    // Validación de nombre y apellidos sin números
+    const nameRegex = /^[a-zA-Z]+$/;
+    let nombreError = "";
+    if (!nameRegex.test(nombre)) {
+      nombreError = "Nombre no debe contener números.";
+    }
+  
+    let apellidoError = "";
+    if (!nameRegex.test(apellido)) {
+      apellidoError = "Apellido no debe contener números.";
+    }
+  
+    // Validación de correo electrónico y contraseña
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+}{"':;?/>.<,])(?!.*\s).{8,}$/;
+  
+    let emailError = "";
+    if (!emailRegex.test(email)) {
+      emailError = "Correo electrónico no válido.";
+    }
+  
+    let passwordError = "";
+    if (!passwordRegex.test(password)) {
+      passwordError =
+        "La contraseña debe contener al menos 8 caracteres, incluyendo mayúsculas, minúsculas, números y caracteres especiales.";
+    }
+  
+    // Actualizar directamente el estado local
+    setErrorMessages({
+      nombre: nombreError,
+      apellido: apellidoError,
+      email: emailError,
+      password: passwordError,
+    });
+  
+    // Si hay errores, detener el proceso
+    if (nombreError || apellidoError || emailError || passwordError) {
+      return;
+    }
+  
+    try {
+      // Registrar usuario y manejar validaciones y modal
+      await registrarUsuario(email, password, rol, nombre, apellido);
     } catch (error) {
       console.error("Error al registrar usuario:", error.message);
       setErrorMessages((prevErrors) => ({
@@ -107,79 +169,7 @@ function Registro() {
       showErrorAlert(errorMessages.email);
     }
   }
-
-  function submitHandler(e) {
-    e.preventDefault();
-
-    const email = e.target.elements.email.value;
-    const password = e.target.elements.password.value;
-    const rol = "usuario"; // Establece el rol como "usuario" por defecto
-    const nombre = e.target.elements.nombre.value;
-    const apellido = e.target.elements.apellido.value;
-
-    // Validación de nombre y apellidos sin números
-    const nameRegex = /^[a-zA-Z]+$/;
-    if (!nameRegex.test(nombre)) {
-      setErrorMessages((prevErrors) => ({
-        ...prevErrors,
-        nombre: "Nombre no debe contener números.",
-      }));
-    } else {
-      setErrorMessages((prevErrors) => ({ ...prevErrors, nombre: "" }));
-    }
-
-    if (!nameRegex.test(apellido)) {
-      setErrorMessages((prevErrors) => ({
-        ...prevErrors,
-        apellido: "Apellido no debe contener números.",
-      }));
-    } else {
-      setErrorMessages((prevErrors) => ({ ...prevErrors, apellido: "" }));
-    }
-
-    // Validación de correo electrónico y contraseña
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+}{"':;?/>.<,])(?!.*\s).{8,}$/;
-
-    if (!emailRegex.test(email)) {
-      setErrorMessages((prevErrors) => ({
-        ...prevErrors,
-        email: "Correo electrónico no válido.",
-      }));
-    } else {
-      setErrorMessages((prevErrors) => ({ ...prevErrors, email: "" }));
-    }
-
-    if (!passwordRegex.test(password)) {
-      setErrorMessages((prevErrors) => ({
-        ...prevErrors,
-        password:
-          "La contraseña debe contener al menos 8 caracteres, incluyendo mayúsculas, minúsculas, números y caracteres especiales.",
-      }));
-    } else {
-      setErrorMessages((prevErrors) => ({ ...prevErrors, password: "" }));
-    }
-
-    // If there are no errors, proceed with user registration
-    if (
-      !errorMessages.nombre &&
-      !errorMessages.apellido &&
-      !errorMessages.email &&
-      !errorMessages.password
-    ) {
-      // Limpiar mensajes de error anteriores
-      setErrorMessages({
-        nombre: "",
-        apellido: "",
-        email: "",
-        password: "",
-      });
-
-      // Registrar usuario y manejar validaciones y modal
-      registrarUsuario(email, password, rol, nombre, apellido);
-    }
-  }
-
+  
   return (
     <div>
       <NavBar />
@@ -210,7 +200,7 @@ function Registro() {
         </label>
 
         <label>
-          Correo electrónico:
+          Correo:
           <input
             type="email"
             id="email"

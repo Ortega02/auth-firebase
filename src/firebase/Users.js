@@ -1,4 +1,6 @@
+import firebaseApp from "../firebase/credenciales";
 import { getDatabase, ref, get, remove, update, push, set } from 'firebase/database';
+import { getAuth, deleteUser as deleteAuthUse, fetchSignInMethodsForEmail } from 'firebase/auth';
 import { db } from '../firebase/credenciales.js';
 import bcrypt from 'bcryptjs';
 import { SHA256 } from 'crypto-js';
@@ -30,8 +32,15 @@ const getUsers = async () => {
     }
   };
 
-  const addUser = async (nombre, password, repeatPassword) => {
+  const addUser = async (nombre, correo, password, repeatPassword) => {
+    const auth = getAuth(firebaseApp);
     try {
+      // Verificar si el correo ya está registrado en la autenticación de Firebase
+      const signInMethods = await fetchSignInMethodsForEmail(auth, correo);
+      if (signInMethods.length > 0) {
+        throw new Error('Ya existe un usuario con ese correo electrónico.');
+      }
+  
       if (password !== repeatPassword) {
         throw new Error('Las contraseñas no coinciden');
       }
@@ -45,20 +54,34 @@ const getUsers = async () => {
   
       const hashedPassword = SHA256(password).toString();
   
+      // Agregar usuario a la base de datos (ejemplo con push)
       await push(ref(db, 'users'), {
         nombre,
+        correo,
         contrasena: hashedPassword,
       });
   
       console.log('Usuario agregado correctamente');
     } catch (error) {
-      console.error('Error al agregar usuario:', error);
+      console.error('Error al agregar usuario:', error.message);
       throw error;
     }
   };
+  
 
   const deleteUser = async (userId) => {
+
     try {
+
+      /* NO SE PUEDE BORRAR DEL AUTH OTROS USUARIOS, SOLO EL QUE ESTE EN SESION 
+
+      // Eliminar usuario de la autenticación de Firebase
+      await getAuth().deleteAuthUser(userId);
+      console.log('Usuario eliminado de la autenticación de Firebase:');
+
+      */
+
+      // Eliminar usuario de la base de datos
       await remove(ref(db, `usuarios/${userId}`));
       console.log('Usuario eliminado correctamente');
     } catch (error) {
