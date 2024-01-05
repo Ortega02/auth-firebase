@@ -19,9 +19,12 @@ const UserListScreen = () => {
   return (
     <div>
       <NavBar />
-      <Button buttonStyles="addButton" text="Agregar Usuario" iconname={faUserPlus} onPress={adduser} />   
-        <div className="userContainer">         
+      <br />
+      <br />
+        <div className="userContainer">      
           <UserList />
+          <br />
+          <Button className="adduserbotton" text="Agregar Usuario" iconname={faUserPlus} onPress={adduser} />   
       </div>
       <Footer />
     </div>

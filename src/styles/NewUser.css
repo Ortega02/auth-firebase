@@ -1,0 +1,68 @@
+/* Estilos para el formulario */
+
+form {
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Estilos para los inputs */
+label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Estilos para el botón */
+input[type="submit"] {
+  background-color: blue;
+  color: white;
+  cursor: pointer;
+}
+
+/* Estilos para la alerta de error */
+.error-alert {
+  color: red;
+  margin-top: 5px; /* Adjust the top margin as needed */
+  text-align: center;
+}
+
+/* Estilos para la alerta de éxito */
+.success-alert {
+  color: green;
+  margin-top: 10px;
+}
+
+/* Estilos para el ojo del campo de contraseña */
+.eye-icon {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+/* Estilos para el modal */
+ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+ReactModal__Overlay--before-close {
+  opacity: 0;
+}

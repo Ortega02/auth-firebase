@@ -6,7 +6,8 @@
     border-radius: 4px;
     width: 40vw; 
     max-width: 200px;
-   
+    border: none;
+    outline: none;
   }
   /*titulo del componente Lista de usuarios userlist.jsx */
   h3 {
@@ -85,7 +86,7 @@
   
   /* Estilos de los botones editar y cerrar de la screen edituser.jsx y adduser.jsx*/
   .adduserbotton {
-    background-color: #3498db;
+    background-color: red;
     color: white;
     border: none;
     border-radius: 5px;
@@ -93,6 +94,7 @@
     cursor: pointer;
     flex: 1; 
     margin: 0 5px; 
+    position: relative;
   }
   /* Responsive */
   @media screen and (max-width: 600px) {

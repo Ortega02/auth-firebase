@@ -36,6 +36,8 @@ function Home() {
   const [Ubicacion, setUbicacion] = useState("");
   const [Imagen, setImagen] = useState("");
   const [showAddCardOption, setShowAddCardOption] = useState(false);
+   //para que no salte la animacion de no hay datos de un solo
+   const [showNoInfo, setShowNoInfo] = useState(false);
 
   const AddClick = () => {
     console.log("agregando");
@@ -78,10 +80,15 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        //para que la animacion de no hay datos no salte de un solo
+        await new Promise(resolve => setTimeout(resolve, 1000));
         const data = await obtenerEstanques();
         setEstanques(data);
       } catch (error) {
         console.error("Error al obtener estanques:", error.message);
+      }finally {
+        //para que la animacion de no hay datos no salte de un solo
+        setShowNoInfo(true);
       }
     };
 
@@ -178,7 +185,9 @@ function Home() {
         </Modal>
 
         <div className="estanques-container">
-      {estanques.length > 0 ? (
+      { showNoInfo && estanques.length == 0 ? (
+         <NoInfo />
+      ) : (
         estanques.map((estanque) => (
           <EstanquesCard
             key={estanque.id}
@@ -188,8 +197,6 @@ function Home() {
             imagen={estanque.imagen}
           />
         ))
-      ) : (
-        <NoInfo />
       )}
     </div>
         {showAddCardOption && (

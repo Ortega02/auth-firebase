@@ -11,19 +11,24 @@ import { Link } from "react-router-dom";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  //para que no salte la animacion de no hay datos de un solo
+  const [showNoInfo, setShowNoInfo] = useState(false);
+
   const navigate = useNavigate();
 
   //cargamos los usuarios que existen en la bd
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        //para que la animacion de no hay datos no salte de un solo
+        await new Promise(resolve => setTimeout(resolve, 1000));
         const usersData = await getUsers();
         setUsers(usersData);
       } catch (error) {
         console.error("Error al obtener usuarios:", error.message);
       } finally {
-        setLoading(false);
+        //para que la animacion de no hay datos no salte de un solo
+        setShowNoInfo(true);
       }
     };
 
@@ -73,7 +78,7 @@ const UserList = () => {
   };
   return (
     <div>
-      {users.length === 0 ? (
+      {showNoInfo && users.length === 0 ? (
         <div>
           <NoInfo />
         </div>
@@ -91,7 +96,7 @@ const UserList = () => {
                 <input
                   className="user-list"
                   type="text"
-                  defaultValue={user.nombre}
+                  defaultValue={`${user.nombre} ${user.apellido}`}
                   readOnly
                 />
                 <button

@@ -3,53 +3,109 @@ import firebaseApp from "../firebase/credenciales";
 import {
   getAuth,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
   fetchSignInMethodsForEmail,
 } from "firebase/auth";
-import { getDatabase, ref, set, get } from "firebase/database";
-import Modal from "react-modal";
+import { getDatabase, ref, set } from "firebase/database";
+import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faExclamationCircle,
+  faEye,
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
+import "animate.css/animate.min.css";
+import "sweetalert2/dist/sweetalert2.min.css";
+import NavBar from "../components/Navbar";
+import Footer from "../components/Footer";
+import "../styles/NewUser.css";
+
 
 const auth = getAuth(firebaseApp);
 
-Modal.setAppElement("#root");
+function showErrorAlert(errorMessage) {
+  Swal.fire({
+    title: "Error",
+    html: `<div><FontAwesomeIcon icon={faExclamationCircle} size="2x" color="red" /></div><div>${errorMessage}</div>`,
+    confirmButtonText: "Aceptar",
+    showCancelButton: false,
+    showCloseButton: true,
+    customClass: {
+      popup: "error-popup-class",
+      title: "error-title-class",
+      htmlContainer: "error-html-container-class",
+    },
+  });
+}
 
 function Registro() {
   const database = getDatabase(firebaseApp);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessages, setErrorMessages] = useState({
+    nombre: "",
+    apellido: "",
+    email: "",
+    password: "",
+  });
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const MySwal = Swal.mixin({
+    showClass: {
+      popup: "animate__animated animate__fadeInDown",
+    },
+    hideClass: {
+      popup: "animate__animated animate__fadeOutUp",
+    },
+  });
+
+  function handlePasswordVisibility() {
+    setPasswordVisible((prevVisible) => !prevVisible);
+  }
 
   async function registrarUsuario(email, password, rol, nombre, apellido) {
     try {
-      // Verificar si el correo ya existe
       const signInMethods = await fetchSignInMethodsForEmail(auth, email);
-  
+
       if (signInMethods.length > 0) {
-        // El correo ya está en uso, mostrar mensaje de error
-        setErrorMessage("Ya existe un usuario con ese correo.");
+        setErrorMessages((prevErrors) => ({
+          ...prevErrors,
+          email: "Ya existe un usuario con ese correo.",
+        }));
+        showErrorAlert(errorMessages.email);
         return;
       }
-  
-      // Registrar usuario si el correo no está en uso
+
       const infoUsuario = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-  
-      // Almacenar información en Realtime Database, incluyendo la contraseña
+
       const dbRef = ref(database, `usuarios/${infoUsuario.user.uid}`);
-      await set(dbRef, { correo: email, rol: rol, nombre, apellido, contraseña: password });
-  
-      // Mostrar modal de registro exitoso
-      setModalIsOpen(true);
+      await set(dbRef, {
+        correo: email,
+        rol: rol,
+        nombre,
+        apellido,
+        contraseña: password,
+      });
+
+      // Trigger SweetAlert for successful registration
+      MySwal.fire({
+        title: "Registro Exitoso",
+        icon: "success",
+        showCancelButton: false,
+        confirmButtonText: "Regresar",
+      }).then(() => {
+        // Redirect to /usuarios
+        window.location.href = "/usuarios";
+      });
     } catch (error) {
       console.error("Error al registrar usuario:", error.message);
-      setErrorMessage("Error al registrar usuario. Inténtalo nuevamente.");
+      setErrorMessages((prevErrors) => ({
+        ...prevErrors,
+        email: "Error al registrar usuario. Inténtalo nuevamente.",
+      }));
+      showErrorAlert(errorMessages.email);
     }
-  }
-
-  function closeModal() {
-    setModalIsOpen(false);
   }
 
   function submitHandler(e) {
@@ -61,58 +117,132 @@ function Registro() {
     const nombre = e.target.elements.nombre.value;
     const apellido = e.target.elements.apellido.value;
 
-    // Limpiar mensajes de error anteriores
-    setErrorMessage("");
+    // Validación de nombre y apellidos sin números
+    const nameRegex = /^[a-zA-Z]+$/;
+    if (!nameRegex.test(nombre)) {
+      setErrorMessages((prevErrors) => ({
+        ...prevErrors,
+        nombre: "Nombre no debe contener números.",
+      }));
+    } else {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, nombre: "" }));
+    }
 
-    // Registrar usuario y manejar validaciones y modal
-    registrarUsuario(email, password, rol, nombre, apellido);
+    if (!nameRegex.test(apellido)) {
+      setErrorMessages((prevErrors) => ({
+        ...prevErrors,
+        apellido: "Apellido no debe contener números.",
+      }));
+    } else {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, apellido: "" }));
+    }
+
+    // Validación de correo electrónico y contraseña
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+}{"':;?/>.<,])(?!.*\s).{8,}$/;
+
+    if (!emailRegex.test(email)) {
+      setErrorMessages((prevErrors) => ({
+        ...prevErrors,
+        email: "Correo electrónico no válido.",
+      }));
+    } else {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, email: "" }));
+    }
+
+    if (!passwordRegex.test(password)) {
+      setErrorMessages((prevErrors) => ({
+        ...prevErrors,
+        password:
+          "La contraseña debe contener al menos 8 caracteres, incluyendo mayúsculas, minúsculas, números y caracteres especiales.",
+      }));
+    } else {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, password: "" }));
+    }
+
+    // If there are no errors, proceed with user registration
+    if (
+      !errorMessages.nombre &&
+      !errorMessages.apellido &&
+      !errorMessages.email &&
+      !errorMessages.password
+    ) {
+      // Limpiar mensajes de error anteriores
+      setErrorMessages({
+        nombre: "",
+        apellido: "",
+        email: "",
+        password: "",
+      });
+
+      // Registrar usuario y manejar validaciones y modal
+      registrarUsuario(email, password, rol, nombre, apellido);
+    }
   }
 
   return (
     <div>
-      <h1 style={{ color: "blue" }}>Regístrate</h1>
-
+      <NavBar />
+      <h1 style={{ color: "blue" }}>Regístrar usuario</h1>
       <form onSubmit={submitHandler}>
         <label>
           Nombre:
-          <input type="text" id="nombre" required />
+          <input
+            type="text"
+            id="nombre"
+            required
+          />
+          {errorMessages.nombre && (
+            <div className="error-alert">{errorMessages.nombre}</div>
+          )}
         </label>
 
         <label>
           Apellido:
-          <input type="text" id="apellido" required />
+          <input
+            type="text"
+            id="apellido"
+            required
+          />
+          {errorMessages.apellido && (
+            <div className="error-alert">{errorMessages.apellido}</div>
+          )}
         </label>
 
         <label>
           Correo electrónico:
-          <input type="email" id="email" required />
+          <input
+            type="email"
+            id="email"
+            required
+          />
+          {errorMessages.email && (
+            <div className="error-alert">{errorMessages.email}</div>
+          )}
         </label>
 
         <label>
           Contraseña:
-          <input type="password" id="password" required />
+          <div style={{ position: "relative" }}>
+            <input
+              type={passwordVisible ? "text" : "password"}
+              id="password"
+              required
+            />
+            <FontAwesomeIcon
+              icon={passwordVisible ? faEyeSlash : faEye}
+              className="eye-icon fa-lg"
+              onClick={handlePasswordVisibility}
+            />
+          </div>
+          {errorMessages.password && (
+            <div className="error-alert">{errorMessages.password}</div>
+          )}
         </label>
-
-        <input type="hidden" id="rol" value="usuario" />
 
         <input type="submit" value="Registrar" />
       </form>
-
-      {errorMessage && (
-        <div style={{ color: "red", marginTop: "10px" }}>{errorMessage}</div>
-      )}
-
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Registro Exitoso"
-      >
-        <h2 style={{ color: "blue" }}>Registro Exitoso</h2>
-        <p>Tu cuenta ha sido registrada con éxito.</p>
-        <button onClick={() => (window.location.href = "/login")}>
-          Ir a Iniciar Sesión
-        </button>
-      </Modal>
+      <Footer />
     </div>
   );
 }
