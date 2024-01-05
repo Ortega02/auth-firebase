@@ -37,6 +37,7 @@
   margin-bottom: 20px;
   border-radius: 10px;
   font-family: 'Open Sans', sans-serif;
+  width: 100%;
 }
 
 .login-form label {
@@ -55,6 +56,23 @@
 .input-container label {
   margin-right: 10px;
 }
+
+.pass-input-container {
+  display: flex;
+  align-items: center;
+  margin-left: 27px;
+}
+
+.icon-container {
+  margin-right: 8px; /* Ajusta el valor según sea necesario */
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+.pass-input-container input {
+  flex: 1;
+}
+
 
 .error-message {
   color: red;
@@ -112,6 +130,8 @@ a {
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
 }
+
+
 .wave {
   position: absolute;
   bottom: 0;
